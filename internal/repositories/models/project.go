@@ -6,5 +6,5 @@ type Project struct {
 	Id      uuid.UUID `json:"id"`
 	OwnerId uuid.UUID `json:"owner_id"`
 	Title   string    `json:"title"`
-	Pages   []Page    `json:"pages"`
+	Pages   []*Page   `json:"pages"`
 }

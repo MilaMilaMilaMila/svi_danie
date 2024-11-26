@@ -60,6 +60,8 @@ func main() {
 		PageService: pageService,
 	}
 
+	projService.PageService = pageService
+
 	// Регистрируем маршрут
 	http.HandleFunc("/add_user", userHandler.AddUser)
 

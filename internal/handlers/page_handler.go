@@ -246,7 +246,7 @@ func (h *PageHandler) GetPage(w http.ResponseWriter, r *http.Request) {
 
 func (h *PageHandler) GetAllProjectPages(w http.ResponseWriter, r *http.Request) {
 	type Response struct {
-		Proj  []*models.Page `json:"page"`
+		Proj  []*models.Page `json:"pages"`
 		Error string         `json:"error"`
 	}
 
