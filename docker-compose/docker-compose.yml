@@ -20,6 +20,15 @@ services:
     volumes:
       - postgres-svi-db:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  application:
+    image: my-go-app:latest
+    container_name: application-svi
+    ports:
+      - "5003:5003"
+    depends_on:
+      local-postgres:
+        condition: service_healthy
+
 
 volumes:
   postgres-svi-db:

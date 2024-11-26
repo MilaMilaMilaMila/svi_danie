@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// Строка подключения к базе данных
-	connStr := "host=localhost port=5433 user=postgres password=postgres dbname=svi_db sslmode=disable"
+	connStr := "host=local-postgres port=5432 user=postgres password=postgres dbname=svi_db sslmode=disable"
 
 	// Установка соединения с базой данных
 	db, err := sql.Open("postgres", connStr)
