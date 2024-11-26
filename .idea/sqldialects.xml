@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/internal/repositories/img_repo.go" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/internal/repositories/page_repo.go" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/internal/repositories/proj_repo.go" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/internal/repositories/user_repo.go" dialect="GenericSQL" />
+  </component>
+</project>
