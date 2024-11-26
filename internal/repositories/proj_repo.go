@@ -10,7 +10,7 @@ type ProjectRepository struct {
 	Db *sql.DB
 }
 
-func (p *ProjectRepository) Create(proj models.Project) error {
+func (p *ProjectRepository) Create(proj *models.Project) error {
 	_, err := p.Db.Exec(`
         INSERT INTO projects (id, owner_id, title)
         VALUES ($1, $2, $3)
@@ -34,6 +34,35 @@ func (p *ProjectRepository) Read(projId uuid.UUID) (*models.Project, error) {
 	}
 
 	return &proj, nil
+}
+
+func (p *ProjectRepository) ReadAllUserProjects(userId uuid.UUID) ([]*models.Project, error) {
+	var projects []*models.Project
+
+	rows, err := p.Db.Query(`
+        SELECT id, owner_id, title
+        FROM projects
+        WHERE owner_id = $1
+    `, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var proj models.Project
+		err := rows.Scan(&proj.Id, &proj.OwnerId, &proj.Title)
+		if err != nil {
+			return nil, err
+		}
+		projects = append(projects, &proj)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return projects, nil
 }
 
 func (p *ProjectRepository) Update(proj models.Project) error {

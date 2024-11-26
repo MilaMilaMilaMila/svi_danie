@@ -6,9 +6,9 @@ import (
 )
 
 type Page struct {
-	Id        uuid.UUID
-	OwnerId   uuid.UUID
-	ProjectId uuid.UUID
-	Title     string
-	Data      json.RawMessage
+	Id        uuid.UUID       `json:"id"`
+	OwnerId   uuid.UUID       `json:"owner_id"`
+	ProjectId uuid.UUID       `json:"project_id"`
+	Title     string          `json:"title"`
+	Data      json.RawMessage `json:"data"`
 }

@@ -3,10 +3,12 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"log"
+	"net/http"
+	"svi_danie/internal/handlers"
 	"svi_danie/internal/repositories"
+	"svi_danie/internal/services"
 )
 
 func main() {
@@ -28,13 +30,69 @@ func main() {
 
 	fmt.Println("Successfully connected to the database!")
 
+	userRepo := &repositories.UserRepository{
+		Db: db,
+	}
+	userService := &services.UserService{
+		UserRepo: userRepo,
+	}
+	userHandler := &handlers.UserHandler{
+		UserService: userService,
+	}
+
+	projRepo := &repositories.ProjectRepository{
+		Db: db,
+	}
+	projService := &services.ProjService{
+		ProRepo: projRepo,
+	}
+	projHandler := &handlers.ProjectHandler{
+		ProjService: projService,
+	}
+
+	pageRepo := &repositories.PageRepository{
+		Db: db,
+	}
+	pageService := &services.PageService{
+		PageRepo: pageRepo,
+	}
+	pageHandler := &handlers.PageHandler{
+		PageService: pageService,
+	}
+
+	// Регистрируем маршрут
+	http.HandleFunc("/add_user", userHandler.AddUser)
+
+	http.HandleFunc("/add_proj", projHandler.CreateProj)
+	http.HandleFunc("/delete_proj", projHandler.DeleteProj)
+	http.HandleFunc("/get_proj", projHandler.GetProj)
+	http.HandleFunc("/get_all_proj", projHandler.GetAllProj)
+
+	http.HandleFunc("/add_page", pageHandler.CreatePage)
+	http.HandleFunc("/delete_page", pageHandler.DeletePage)
+	http.HandleFunc("/edit_page", pageHandler.EditPage)
+	http.HandleFunc("/get_page", pageHandler.GetPage)
+	http.HandleFunc("/get_all_pages", pageHandler.GetAllProjectPages)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Добро пожаловать на сервер!") // Отправляет сообщение на корневом маршруте
+	})
+
+	// Запускаем сервер
+	port := "5003"
+	fmt.Printf("Сервер запущен на http://localhost:%s", port)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	if err != nil {
+		log.Println(err)
+	}
+
 	//pageRepo := &repositories.PageRepository{
 	//	Db: db,
 	//}
 
-	userRepo := &repositories.UserRepository{
-		Db: db,
-	}
+	//userRepo := &repositories.UserRepository{
+	//	Db: db,
+	//}
 
 	// Пример создания нового пользователя
 	//newUser := models.User{
@@ -68,10 +126,10 @@ func main() {
 	//}
 
 	// Пример удаления пользователя
-	err = userRepo.Delete(uuid.MustParse("99af3993-2402-402e-bad8-c277c2e0485e"))
-	if err != nil {
-		fmt.Printf("delete: %s\n", err)
-	}
+	//err = userRepo.Delete(uuid.MustParse("99af3993-2402-402e-bad8-c277c2e0485e"))
+	//if err != nil {
+	//	fmt.Printf("delete: %s\n", err)
+	//}
 
 	//// Пример создания новой страницы
 	//newPage := models.Page{

@@ -6,4 +6,5 @@ type User struct {
 	Id       uuid.UUID
 	Login    string
 	Password string
+	Projects []Project
 }

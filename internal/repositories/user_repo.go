@@ -10,7 +10,7 @@ type UserRepository struct {
 	Db *sql.DB
 }
 
-func (p *UserRepository) Create(user models.User) error {
+func (p *UserRepository) Create(user *models.User) error {
 	_, err := p.Db.Exec(`
         INSERT INTO users (id, login, password)
         VALUES ($1, $2, $3)

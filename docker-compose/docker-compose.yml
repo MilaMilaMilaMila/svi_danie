@@ -1,0 +1,25 @@
+version: '3.5'
+
+name: svi-compose
+
+services:
+  local-postgres:
+    image: postgres:14
+    container_name: local-postgres-svi-db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: svi_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-svi-db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres-svi-db:
