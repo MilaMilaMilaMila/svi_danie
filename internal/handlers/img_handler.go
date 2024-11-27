@@ -72,7 +72,7 @@ func formUrl(imgId uuid.UUID, r *http.Request) string {
 			protocol = "http"
 		}
 	}
-	return protocol + "://" + r.Host + "/get_img/" + imgId.String()
+	return protocol + "://" + r.Host + "/get_img?img_id=" + imgId.String()
 }
 
 func (h *ImgHandler) GetImage(w http.ResponseWriter, r *http.Request) {
