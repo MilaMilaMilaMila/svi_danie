@@ -3,13 +3,14 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
-	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"svi_danie/internal/handlers"
 	"svi_danie/internal/repositories"
 	"svi_danie/internal/services"
+
+	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -63,10 +64,22 @@ func main() {
 
 	projService.PageService = pageService
 
+	imgRepo := &repositories.ImgRepository{
+		Db: db,
+	}
+	imgService := &services.ImgService{
+		ImgRepo: imgRepo,
+	}
+	imgHandler := &handlers.ImgHandler{
+		ImgService: imgService,
+	}
+
 	// Создаем маршрутизатор
 	mux := http.NewServeMux()
 
 	// Регистрируем маршруты
+	mux.HandleFunc("/create_img", imgHandler.CreateImage)
+	mux.HandleFunc("/get_img", imgHandler.GetImage)
 	mux.HandleFunc("/add_user", userHandler.AddUser)
 	mux.HandleFunc("/add_proj", projHandler.CreateProj)
 	mux.HandleFunc("/delete_proj", projHandler.DeleteProj)

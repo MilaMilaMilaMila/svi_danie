@@ -2,8 +2,9 @@ package repositories
 
 import (
 	"database/sql"
-	"github.com/google/uuid"
 	"svi_danie/internal/repositories/models"
+
+	"github.com/google/uuid"
 )
 
 type ImgRepository struct {

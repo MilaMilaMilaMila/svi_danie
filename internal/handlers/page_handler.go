@@ -2,44 +2,17 @@ package handlers
 
 import (
 	"encoding/json"
-	"github.com/google/uuid"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"svi_danie/internal/repositories/models"
 	"svi_danie/internal/services"
+
+	"github.com/google/uuid"
 )
 
 type PageHandler struct {
 	PageService *services.PageService
-}
-
-func (h *PageHandler) SaveImgs(w http.ResponseWriter, r *http.Request) []*models.Img {
-	imgs := make([]*models.Img, 0)
-
-	imgsFiles := r.MultipartForm.File["imgs"]
-	for _, imgHeader := range imgsFiles {
-		// Открываем файл для записи
-		file, err := imgHeader.Open()
-		if err != nil {
-			http.Error(w, "Unable to open ing file", http.StatusInternalServerError)
-			return nil
-		}
-		defer file.Close()
-
-		fileData, err := ioutil.ReadAll(file)
-		if err != nil {
-			http.Error(w, "Unable to read file", http.StatusInternalServerError)
-			return nil
-		}
-		img := &models.Img{
-			Id:   uuid.New(),
-			Data: fileData,
-		}
-		imgs = append(imgs, img)
-	}
-
-	return imgs
 }
 
 func (h *PageHandler) CreatePage(w http.ResponseWriter, r *http.Request) {
