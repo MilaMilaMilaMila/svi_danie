@@ -60,7 +60,19 @@ func (h *ImgHandler) CreateImage(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	resp.ImageUrl = r.Host + "/" + createdImg.Id.String()
+	resp.ImageUrl = formUrl(createdImg.Id, r)
+}
+
+func formUrl(imgId uuid.UUID, r *http.Request) string {
+	protocol := r.URL.Scheme
+	if protocol == "" {
+		if r.TLS != nil {
+			protocol = "https"
+		} else {
+			protocol = "http"
+		}
+	}
+	return protocol + "://" + r.Host + "/get_img/" + imgId.String()
 }
 
 func (h *ImgHandler) GetImage(w http.ResponseWriter, r *http.Request) {
