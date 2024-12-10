@@ -23,16 +23,16 @@ func main() {
 	pageRepo := &repositories.PageRepository{Db: db}
 
 	userService := &services.UserService{UserRepo: userRepo}
-	imageServie := &services.ImgService{ImgRepo: imageRepo}
-	pageServie := &services.PageService{PageRepo: pageRepo}
-	projectService := &services.ProjService{ProjRepo: projectRepo}
+	imageService := &services.ImgService{ImgRepo: imageRepo}
+	pageService := &services.PageService{PageRepo: pageRepo}
+	projectService := &services.ProjService{ProjRepo: projectRepo, PageRepo: pageRepo}
 
 	authDecorator := &decorators.AuthDecorator{UserService: userService}
 
 	userController := &controllers.UserController{UserService: userService}
 	pageController := &controllers.PageController{
 		AuthDecorator: authDecorator,
-		PageService:   pageServie,
+		PageService:   pageService,
 		ProjService:   projectService,
 	}
 	projectController := &controllers.ProjectController{
@@ -41,7 +41,7 @@ func main() {
 	}
 	imageController := &controllers.ImageController{
 		AuthDecorator: authDecorator,
-		ImgService:    imageServie,
+		ImgService:    imageService,
 	}
 
 	router := gin.Default()

@@ -40,7 +40,8 @@ func (c *UserController) createUser(ctx *gin.Context) {
 
 func (c *UserController) getUser(ctx *gin.Context) {
 	type Response struct {
-		Login string `json:"login"`
+		Id    uuid.UUID `json:"id"`
+		Login string    `json:"login"`
 	}
 
 	user, err := c.authUser(ctx)
@@ -49,7 +50,7 @@ func (c *UserController) getUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, Response{Login: user.Login})
+	ctx.JSON(http.StatusOK, Response{Login: user.Login, Id: user.Id})
 }
 
 func (d *UserController) authUser(ctx *gin.Context) (*models.User, error) {
