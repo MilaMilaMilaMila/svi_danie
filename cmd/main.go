@@ -60,7 +60,7 @@ func initRouter(router gin.IRouter, ctrlList ...controllers.Controller) {
 
 func initDbConnection() *sql.DB {
 	// Строка подключения к базе данных
-	connStr := "host=local-postgres port=5432 user=postgres password=postgres dbname=svi_db sslmode=disable"
+	connStr := "host=postgres-db port=5432 user=postgres password=postgres dbname=svi_db sslmode=disable"
 
 	// Установка соединения с базой данных
 	db, err := sql.Open("postgres", connStr)
