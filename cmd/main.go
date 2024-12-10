@@ -15,6 +15,7 @@ import (
 
 func main() {
 	db := initDbConnection()
+	defer db.Close()
 
 	userRepo := &repositories.UserRepository{Db: db}
 	imageRepo := &repositories.ImgRepository{Db: db}
@@ -66,11 +67,11 @@ func initDbConnection() *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
 	// Проверка соединения
 	err = db.Ping()
 	if err != nil {
+		db.Close()
 		log.Fatal(err)
 	}
 
