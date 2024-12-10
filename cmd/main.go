@@ -80,7 +80,7 @@ func initDbConnection() *sql.DB {
 
 func initCorsConfig() cors.Config {
 	return cors.Config{
-		AllowOrigins:     []string{"http://localhost:3001"},
+		AllowOrigins:     []string{"http://localhost:3001", "https://xv0z-qhtn-bbzg.gw-1a.dockhost.net/"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
