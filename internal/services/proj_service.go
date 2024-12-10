@@ -51,14 +51,14 @@ func (p *ProjService) GetAllUserProj(userId uuid.UUID) ([]*models.Project, error
 		return nil, errors.New(fmt.Sprintf("proj service: get all user %s projects: %s", userId, err))
 	}
 
-	//for _, proj := range proj {
-	//	pages, err := p.PageRepo.ReadAllProjectPages(proj.Id)
-	//	if err != nil {
-	//		return nil, errors.New(fmt.Sprintf("proj service: get proj pages: %s", err))
-	//	}
-	//
-	//	proj.Pages = pages
-	//}
+	for _, proj := range proj {
+		pages, err := p.PageRepo.ReadAllProjectPages(proj.Id)
+		if err != nil {
+			return nil, errors.New(fmt.Sprintf("proj service: get proj pages: %s", err))
+		}
+
+		proj.Pages = pages
+	}
 	return proj, nil
 }
 
