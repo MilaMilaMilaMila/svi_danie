@@ -2,8 +2,9 @@ package repositories
 
 import (
 	"database/sql"
-	"github.com/google/uuid"
 	"svi_danie/internal/repositories/models"
+
+	"github.com/google/uuid"
 )
 
 type PageRepository struct {
@@ -12,9 +13,9 @@ type PageRepository struct {
 
 func (p *PageRepository) Create(page *models.Page) error {
 	_, err := p.Db.Exec(`
-        INSERT INTO pages (id, owner_id, project_id, title, data)
-        VALUES ($1, $2, $3, $4, $5)
-    `, page.Id, page.OwnerId, page.ProjectId, page.Title, page.Data)
+        INSERT INTO pages (id, project_id, title, data)
+        VALUES ($1, $2, $3, $4)
+    `, page.Id, page.ProjectId, page.Title, page.Data)
 	if err != nil {
 		return err
 	}
@@ -25,10 +26,10 @@ func (p *PageRepository) Create(page *models.Page) error {
 func (p *PageRepository) Read(pageID uuid.UUID) (*models.Page, error) {
 	var page models.Page
 	err := p.Db.QueryRow(`
-        SELECT id, owner_id, project_id, title, data
+        SELECT id, project_id, title, data
         FROM pages
         WHERE id = $1
-    `, pageID).Scan(&page.Id, &page.OwnerId, &page.ProjectId, &page.Title, &page.Data)
+    `, pageID).Scan(&page.Id, &page.ProjectId, &page.Title, &page.Data)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +41,7 @@ func (p *PageRepository) ReadAllProjectPages(projId uuid.UUID) ([]*models.Page, 
 	var pages []*models.Page
 
 	rows, err := p.Db.Query(`
-        SELECT id, owner_id, project_id, title, data
+        SELECT id, project_id, title, data
         FROM pages
         WHERE project_id = $1
     `, projId)
@@ -51,7 +52,7 @@ func (p *PageRepository) ReadAllProjectPages(projId uuid.UUID) ([]*models.Page, 
 
 	for rows.Next() {
 		var page models.Page
-		err := rows.Scan(&page.Id, &page.OwnerId, &page.ProjectId, &page.Title, &page.Data)
+		err := rows.Scan(&page.Id, &page.ProjectId, &page.Title, &page.Data)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +69,9 @@ func (p *PageRepository) ReadAllProjectPages(projId uuid.UUID) ([]*models.Page, 
 func (p *PageRepository) Update(page *models.Page) error {
 	_, err := p.Db.Exec(`
         UPDATE pages
-        SET owner_id = $1, project_id = $2, title = $3, data = $4
-        WHERE id = $5
-    `, page.OwnerId, page.ProjectId, page.Title, page.Data, page.Id)
+        SET project_id = $1, title = $2, data = $3
+        WHERE id = $4
+    `, page.ProjectId, page.Title, page.Data, page.Id)
 	if err != nil {
 		return err
 	}

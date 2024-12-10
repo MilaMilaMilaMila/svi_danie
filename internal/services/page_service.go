@@ -3,9 +3,10 @@ package services
 import (
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
 	"svi_danie/internal/repositories"
 	"svi_danie/internal/repositories/models"
+
+	"github.com/google/uuid"
 )
 
 type PageService struct {
@@ -36,8 +37,8 @@ func (p *PageService) DeletePage(projId uuid.UUID) error {
 	return nil
 }
 
-func (p *PageService) GetPage(projId uuid.UUID) (*models.Page, error) {
-	proj, err := p.PageRepo.Read(projId)
+func (p *PageService) GetPage(pageId uuid.UUID) (*models.Page, error) {
+	proj, err := p.PageRepo.Read(pageId)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("page service: get page: %s", err))
 	}

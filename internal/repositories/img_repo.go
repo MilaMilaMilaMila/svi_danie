@@ -11,7 +11,7 @@ type ImgRepository struct {
 	Db *sql.DB
 }
 
-func (p *ImgRepository) Create(img models.Img) error {
+func (p *ImgRepository) Create(img *models.Img) error {
 	_, err := p.Db.Exec(`
         INSERT INTO img (id, data)
         VALUES ($1, $2)

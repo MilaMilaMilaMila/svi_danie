@@ -2,8 +2,9 @@ package repositories
 
 import (
 	"database/sql"
-	"github.com/google/uuid"
 	"svi_danie/internal/repositories/models"
+
+	"github.com/google/uuid"
 )
 
 type UserRepository struct {
@@ -20,6 +21,20 @@ func (p *UserRepository) Create(user *models.User) error {
 	}
 
 	return nil
+}
+
+func (p *UserRepository) FindByLogin(login string) *models.User {
+	var user models.User
+	err := p.Db.QueryRow(`
+        SELECT id, login, password
+        FROM users
+        WHERE login = $1
+    `, login).Scan(&user.Id, &user.Login, &user.Password)
+	if err != nil {
+		return nil
+	}
+
+	return &user
 }
 
 func (p *UserRepository) Read(userID uuid.UUID) (*models.User, error) {

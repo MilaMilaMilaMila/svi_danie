@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"svi_danie/internal/repositories"
 	"svi_danie/internal/repositories/models"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
@@ -18,4 +20,16 @@ func (u *UserService) AddUser(user *models.User) error {
 	}
 
 	return nil
+}
+
+func (u *UserService) AuthUser(login, password string) (*models.User, error) {
+	user := u.UserRepo.FindByLogin(login)
+	if user == nil {
+		return nil, errors.New(fmt.Sprintf("user service: no such user: %s", login))
+	}
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("user service: wrong password: %s", err))
+	}
+	return user, nil
 }

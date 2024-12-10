@@ -21,7 +21,7 @@ func (s *ImgService) GetImageById(imgId uuid.UUID) (*models.Img, error) {
 	return image, nil
 }
 
-func (s *ImgService) CreateImage(img models.Img) error {
+func (s *ImgService) CreateImage(img *models.Img) error {
 	err := s.ImgRepo.Create(img)
 	if err != nil {
 		return errors.New(fmt.Sprintf("image service: create image: %s", err))

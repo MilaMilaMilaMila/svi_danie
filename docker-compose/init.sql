@@ -37,9 +37,6 @@ create table pages
 (
     id         uuid not null
         primary key,
-    owner_id   uuid
-        references users
-            on update cascade on delete cascade,
     title      text,
     data       jsonb,
     project_id uuid
